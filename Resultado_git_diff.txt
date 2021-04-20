@@ -1,6 +1,6 @@
 Comandos: 
-    1 - "git log", para pegar o id dos commits 
-    2 - "git diff 21d2f39f3a57cd990b916e4c0db68a622e390857 9f5688c209ada62adae35428a7386d63bac9943a"
+    1 - "git log", para pegar o hash dos commits 
+    2 - "git diff 21d2f3 9f5688"
 
 Resultados:
     diff --git a/mars.txt b/mars.txt
