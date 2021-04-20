@@ -1,0 +1,14 @@
+Comandos: 
+    1 - "git log", para pegar o id dos commits 
+    2 - "git diff 21d2f39f3a57cd990b916e4c0db68a622e390857 9f5688c209ada62adae35428a7386d63bac9943a"
+
+Resultados:
+    diff --git a/mars.txt b/mars.txt
+    index 8f0746a..e0b7ce8 100644
+    --- a/mars.txt
+    +++ b/mars.txt
+    @@ -1 +1 @@
+    -Teste 2
+    \ No newline at end of file
+    +Teste
+    \ No newline at end of file
