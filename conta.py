@@ -1,115 +1,121 @@
-import datetime
+class Historico:
+    def __init__(self):
+        self._deposito = []
+        self._saque = []
+        self._transferencia = []         
+    
+    @property
+    def get_deposito(self):
+        if self._deposito:
+            for x in self._deposito:
+                print(x)
+        else:
+            print('Sem histórico de depósitos') 
 
-class Cliente:
-    __slots__ = ['__nome', '__sobrenome', '__cpf']
-    def __init__(self, nome, sobrenome, cpf):
-        self.__nome = nome
-        self.__sobrenome = sobrenome
-        self.__cpf = cpf
+    def deposito(self, d):
+        self._deposito.append(d)
+
+    @property
+    def get_saque(self):
+        if self._saque:
+            for x in self._saque:
+                print(x)
+        else:
+            print('Sem histórico de saques') 
+
+    def saque(self, s):
+        self._saque.append(s)
+
+    @property
+    def get_transferencia(self):
+        if self._transferencia:
+            print(self._transferencia)
+        else:
+            print('Sem histórico de transferncias') 
+
+    def transferencia(self, t):
+        self._transferencia.append(t)
+
+
 
 class Conta:
-    __slots__ = ['__numero', '__cliente', '__saldo', '__limite', '__data_abertura', '__mensagem', '__historico', '__esc', '__valor', '__destino']
-    __total_contas = 0
+    _total_contas = 0
+    __slots__ = ['_titular','_numero','_saldo', '_historico']
 
-    def __init__(self, numero, cliente, saldo, limite):
-        self.__numero = numero
-        self.__cliente = cliente
-        self.__saldo = saldo
-        self.__limite = limite
-        self.__data_abertura = datetime.datetime.today()
-        self.__historico = []
-        self.__mensagem = f"Data de Criação {self.__data_abertura}"
-        self.__historico.append(self.__mensagem)
-        Conta.__total_contas += 1
+    def __init__(self, cliente, numero, saldo):         
+        self._titular = cliente 
+        self._numero = numero 
+        self._saldo = saldo 
+        self._historico = Historico()
+        Conta._total_contas += 1
 
     @staticmethod
-    def get_totalcontas():
-        return Conta.__total_contas
+    def get_total_contas():
+        return Conta._total_contas
 
-    def menu(self, c2):
-        try:
-            while True:
-                self.__esc = int(input("1 - Depositar\n2 - Sacar\n3 - Transferir\n4 - Extrato\n5 - Historico\n6 - Sair\n"))
-                if self.__esc == 1:
-                    valor = float(input("Digite o valor para ser Depositado: "))
-                    self.deposita(valor)
-                elif self.__esc == 2:
-                    self.saca()
-                elif self.__esc == 3:
-                    self.transfere(c2)
-                elif self.__esc == 4:
-                    self.extrato()
-                elif self.__esc == 5:
-                    self.historico()
-                else:
-                    print("Obrigado por usar nossos Serviços...")
-                    break
-        except:
-            print("Entrada Invalida\n")
-            self.menu(c2)
+    @property
+    def get_numero(self):
+        return self._numero 
 
-    def deposita(self, valor):
-        self.__valor = valor
-        try: 
-            if self.__valor > 0:
-                self.__saldo += self.__valor
-                self.__mensagem = f"Deposito de R$ {self.__valor}"
-                self.__historico.append(self.__mensagem)
-                print("Transacao concluida\n")
-            else:
-                print("Valor invalido\n")
-                valor = float(input("Digite o valor para ser Depositado: "))
-                self.deposita(valor) 
-        except:
-            print("Entrada Invalida\n")
-            valor = float(input("Digite o valor para ser Depositado: "))
-            self.deposita(valor)
+    @property
+    def get_saldo(self):
+        return self._saldo 
 
-    def saca(self):
-        try:
-            self.__valor = float(input("Digite o valor para ser sacado: "))
-            if self.__valor <= self.__saldo:
-                self.__saldo -= self.__valor
-                self.__mensagem = f"Saque de R$ {self.__valor}"
-                self.__historico.append(self.__mensagem)
-                print("Valor sacado\n")
-                self.extrato()
-            else:
-                print("Valor invalido\n")
-                self.saca() 
-        except:
-            print("Entrada Invalida\n")
-            self.saca()
+    def saldo(self, saldo):
+        self._saldo = saldo
 
-    def transfere(self, destino):
-        self.__destino = destino
-        try:
-            self.__valor = float(input("Digite o valor: "))
-            if self.__valor <= self.__saldo:
-                self.__saldo -= self.__valor
-                self.__mensagem = f"Transferencia de R$ {self.__valor} para {self.__destino.__numero}"
-                self.__historico.append(self.__mensagem)
-                self.__destino.deposita(self.__valor)
-                self.extrato()
-            else:
-                print("Valor invalido\n")
-                self.transfere(self.__destino)
-        except:
-            print("Entrada Invalida\n")
-            self.transfere(self.__destino)
 
-    def historico(self):
-        for i in range(len(self.__historico)):
-            print(self.__historico[i])
-        print("\n")
-        
-    def extrato(self):
-        print("Saldo Atual R$", self.__saldo, "\n")
+    def deposita(valor):
+        self._saldo += valor
+        self._historico.set_deposito(['Depósito de: ', valor]) 
+    
+    def saca(valor):
+        if self._saldo >= valor:
+            self._saldo -= valor
+            self._historico.set_saque(['Saque de: ', valor])
+    
+    def extrado(valor):
+        print(self._saldo)
+    
+    def transfere(self, conta, valor):
+        if self._saldo >= valor:
+            self._saldo -= valor
+            conta._saldo += valor
+            conta._historico.transferencia(['Valor recebido: ', valor, 'de: ', self._titular.get_nome])
+            self._historico.transferencia(['TEV de: ', valor, 'para: ', conta._titular.get_nome])
+        else:
+            print('\nSaldo insuficiente')
+
+
+class Cliente:
+    def __init__(self, nome, sobrenome, cpf): 
+        self._nome = nome 
+        self._sobrenome = sobrenome 
+        self._cpf = cpf 
+
+    @property
+    def get_nome(self):
+        return self._nome 
+
+    def nome(self, n):
+        self._nome = n
+
+    @property
+    def get_sobrenome(self):
+        return self._sobrenome 
+
+    def sobrenome(self, s):
+        self._sobrenome = s
+
+    @property
+    def get_cpf(self):
+        return self._cpf 
+
+    def cpf(self, c):
+        self._cpf = c
+    
     
 
-cli = Cliente('Daniel', 'Silveira', 323233)
-c1 = Conta('234-1', cli, 50.99, 1000)
-cli2 = Cliente('Joao', 'Martins', 12334)
-c2 = Conta('235-1', cli2, 150, 1000)
-c1.menu(c2)
-print("Total de Contas = ", c1.get_totalcontas(), "\n")
+    
+
+    
