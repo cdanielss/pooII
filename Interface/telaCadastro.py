@@ -53,6 +53,8 @@ class TelaCadastro(object):
         self.lineEdit_4.setObjectName("lineEdit_4")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(380, 320, 131, 41))
+        # Colocando cor no botao
+        self.pushButton.setStyleSheet("background-color : green; color : white;")
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)

@@ -35,6 +35,9 @@ class TelaPrincipal(object):
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(340, 290, 151, 41))
+        # Colocando cor no botao
+        self.pushButton.setStyleSheet("background-color : green; color : white;")
+
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)

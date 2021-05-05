@@ -8,6 +8,8 @@ from PyQt5.QtCore import QCoreApplication
 from telaPrincipal import TelaPrincipal
 from telaCadastro import TelaCadastro
 from telaBanco import TelaBanco
+from conta import Cliente, Conta, Historico
+from banco import Banco
 
 class Ui_Main(QtWidgets.QWidget):
     def setupUi(self, Main):
