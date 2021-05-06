@@ -44,6 +44,8 @@ class TelaHistorico(object):
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_6.setGeometry(QtCore.QRect(250, 360, 131, 41))
+        # Colocando cor no botao
+        self.pushButton_6.setStyleSheet("background-color : rgb(164, 0, 0); color : white;")
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)

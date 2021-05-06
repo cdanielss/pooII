@@ -26,6 +26,8 @@ class TelaSaldo(object):
         self.lineEdit.setObjectName("lineEdit")
         self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_6.setGeometry(QtCore.QRect(230, 340, 131, 41))
+        # Colocando cor no botao
+        self.pushButton_6.setStyleSheet("background-color : rgb(164, 0, 0); color : white;")
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)

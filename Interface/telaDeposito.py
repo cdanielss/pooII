@@ -25,6 +25,8 @@ class TelaDeposito(object):
         self.lineEdit.setObjectName("lineEdit")
         self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_6.setGeometry(QtCore.QRect(390, 110, 131, 41))
+        # Colocando cor no botao
+        self.pushButton_6.setStyleSheet("background-color : green; color : white;")
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -32,6 +34,8 @@ class TelaDeposito(object):
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_7.setGeometry(QtCore.QRect(230, 350, 131, 41))
+        # Colocando cor no botao
+        self.pushButton_7.setStyleSheet("background-color : rgb(164, 0, 0); color : white;")
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)

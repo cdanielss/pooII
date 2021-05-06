@@ -11,6 +11,8 @@ class TelaSaque(object):
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_6.setGeometry(QtCore.QRect(400, 130, 131, 41))
+        # Colocando cor no botao
+        self.pushButton_6.setStyleSheet("background-color : green; color : white;")
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -25,6 +27,8 @@ class TelaSaque(object):
         self.pushButton_7.setObjectName("pushButton_7")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(150, 140, 211, 25))
+        # Colocando cor no botao
+        self.pushButton_7.setStyleSheet("background-color : rgb(164, 0, 0); color : white;")
         self.lineEdit.setObjectName("lineEdit")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(50, 140, 141, 17))
