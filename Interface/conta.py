@@ -89,7 +89,7 @@ class Conta:
          self._historico.saque(['Saque de: ', valor])
    
    def extrato(self):
-      print(self._saldo)
+      return self._saldo
    
    def transfere(self, conta, valor):
       if self._saldo >= valor:

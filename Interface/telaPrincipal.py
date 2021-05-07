@@ -62,8 +62,8 @@ class TelaPrincipal(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Login"))
-        self.label_2.setText(_translate("MainWindow", "Número da Conta"))
-        self.label_3.setText(_translate("MainWindow", "CPF"))
+        self.label_2.setText(_translate("MainWindow", "Nome do User"))
+        self.label_3.setText(_translate("MainWindow", "Cont"))
         self.pushButton.setText(_translate("MainWindow", "Entrar"))
         self.pushButton_2.setText(_translate("MainWindow", "Cadastra-se"))
 

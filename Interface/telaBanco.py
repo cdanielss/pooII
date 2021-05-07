@@ -80,7 +80,7 @@ class TelaBanco(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Banco"))
-        self.label_2.setText(_translate("MainWindow", "CPF do Usuário"))
+        self.label_2.setText(_translate("MainWindow", "Nome do User"))
         self.pushButton.setText(_translate("MainWindow", "Depositar"))
         self.pushButton_2.setText(_translate("MainWindow", "Sacar"))
         self.pushButton_3.setText(_translate("MainWindow", "Saldo"))
