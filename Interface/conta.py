@@ -60,7 +60,7 @@ class Conta:
 
    @property
    def get_titular(self):
-      return self._titular.get_nome 
+      return self._titular
 
    @property
    def get_numero(self):
@@ -88,8 +88,8 @@ class Conta:
          self._saldo -= valor
          self._historico.saque(['Saque de: ', valor])
    
-   def extrato(self):
-      return self._saldo
+   #def extrato(self):
+    #  return self._saldo
    
    def transfere(self, conta, valor):
       if self._saldo >= valor:

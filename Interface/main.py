@@ -19,7 +19,7 @@ from banco import Banco
 class Ui_Main(QtWidgets.QWidget):
     def setupUi(self, Main):
         Main.setObjectName("Main")
-        Main.resize(640, 480)
+        Main.resize(480, 640)
         
         self.QtStack = QtWidgets.QStackedLayout()
         self.stack0 = QtWidgets.QMainWindow()
@@ -66,44 +66,58 @@ class Main(QMainWindow, Ui_Main):
 
         self.banco = Banco()
         self.nome = ''
+        self.sobrenome = ''
         self.numero = ''
-        self.tela_principal.pushButton.clicked.connect(self.abrirTelaLogado)
-        self.tela_principal.pushButton_2.clicked.connect(self.abrirTelaCadastro)
+        self.cpf = ''
+        self.tela_principal.botao_entrar.clicked.connect(self.abrirTelaBanco)
+        self.tela_principal.botao_cadastrar.clicked.connect(self.abrirTelaCadastro)
 
-        self.tela_cadastro.pushButton_2.clicked.connect(self.botaoVoltarHome)
-        self.tela_cadastro.pushButton.clicked.connect(self.botaoCadastra)
+        self.tela_cadastro.botao_voltar.clicked.connect(self.botaoVoltarHome)
+        self.tela_cadastro.botao_salvar.clicked.connect(self.botaoCadastra)
 
-        self.tela_banco.pushButton.clicked.connect(self.botaoDeposito)
-        self.tela_banco.pushButton_2.clicked.connect(self.botaoSacar)
-        self.tela_banco.pushButton_3.clicked.connect(self.botaoSaldo)
-        self.tela_banco.pushButton_4.clicked.connect(self.botaoTransferir)
-        self.tela_banco.pushButton_5.clicked.connect(self.botaoHistorico)
-        self.tela_banco.pushButton_6.clicked.connect(self.botaoVoltarHome)
+        self.tela_banco.botao_depositar.clicked.connect(self.botaoDeposito)
+        self.tela_banco.botao_sacar.clicked.connect(self.botaoSacar)
+        self.tela_banco.botao_saldo.clicked.connect(self.botaoSaldo)
+        self.tela_banco.botao_transferir.clicked.connect(self.botaoTransferir)
+        self.tela_banco.botao_historico.clicked.connect(self.botaoHistorico)
+        self.tela_banco.botao_sair.clicked.connect(self.botaoVoltarHome)
 
-        self.tela_transferir.pushButton_7.clicked.connect(self.botaoVoltarBanco)
-        self.tela_saque.pushButton_7.clicked.connect(self.botaoVoltarBanco)
-        self.tela_saldo.pushButton_6.clicked.connect(self.botaoVoltarBanco)
-        self.tela_historico.pushButton_6.clicked.connect(self.botaoVoltarBanco)
-        self.tela_deposito.pushButton_6.clicked.connect(self.botaoDepositar)
-        self.tela_deposito.pushButton_7.clicked.connect(self.botaoVoltarBanco)
+        self.tela_deposito.botao_sair.clicked.connect(self.botaoVoltarBanco)
+        self.tela_deposito.botao_ok.clicked.connect(self.botaoDepositar)
+        
+        self.tela_historico.botao_sair.clicked.connect(self.botaoVoltarBanco)
+        self.tela_transferir.botao_sair.clicked.connect(self.botaoVoltarBanco)
+        
+        self.tela_saque.botao_sair.clicked.connect(self.botaoVoltarBanco)
+        
+        self.tela_saldo.botao_sair.clicked.connect(self.botaoVoltarBanco)
     
     def botaoDeposito(self):
         self.QtStack.setCurrentIndex(3)
+        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome) )
+        self.tela_deposito.campo_cpf.setText(self.cpf)
     
     def botaoSacar(self):
         self.QtStack.setCurrentIndex(6)
-
+        self.tela_saque.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_saque.campo_cpf.setText(self.cpf)
+    
     def botaoSaldo(self):
         self.QtStack.setCurrentIndex(5)
-        num = int(self.numero)
-        valor = self.banco.saldo(num)
-        self.tela_saldo.lineEdit.setText(valor)
+        self.tela_saldo.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_saldo.campo_cpf.setText(self.cpf)
+
+        self.tela_saldo.campo_saldo.setText(self.banco.saldo(self.numero))
     
     def botaoTransferir(self):
         self.QtStack.setCurrentIndex(7)
+        self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_transferir.campo_cpf.setText(self.cpf)
 
     def botaoHistorico(self):
         self.QtStack.setCurrentIndex(4)
+        self.tela_historico.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_historico.campo_cpf.setText(self.cpf)
     
     def botaoVoltarHome(self):
         self.QtStack.setCurrentIndex(0)
@@ -112,39 +126,41 @@ class Main(QMainWindow, Ui_Main):
         self.QtStack.setCurrentIndex(2)
 
     def botaoDepositar(self):
-        valor = self.tela_deposito.lineEdit.text()
+        valor = self.tela_deposito.campo_valor.text()
         self.banco.depositar(self.numero, float(valor))
         QMessageBox.information(None, 'Banco', 'Valor depositado')
         self.QtStack.setCurrentIndex(2)
 
     def botaoCadastra(self):
-        self.nome = self.tela_cadastro.lineEdit.text()
-        sobrenome = self.tela_cadastro.lineEdit_2.text()
-        cpf = self.tela_cadastro.lineEdit_3.text()
-        self.numero = self.tela_cadastro.lineEdit_4.text()
-        if not (self.numero == '' or cpf == '' or sobrenome == '' or self.nome == ''):
-            self.banco.criar_conta(self.nome, sobrenome, cpf, self.numero)
+        self.nome = self.tela_cadastro.campo_nome.text()
+        self.sobrenome = self.tela_cadastro.campo_Sobrenome.text()
+        self.cpf = self.tela_cadastro.campo_cpf.text()
+        self.numero = self.tela_cadastro.campo_NumeroConta.text()
+        if not (self.numero == '' or self.cpf == '' or self.sobrenome == '' or self.nome == ''):
+            self.banco.criar_conta(self.nome, self.sobrenome, self.cpf, self.numero)
             self.QtStack.setCurrentIndex(0)
-            self.tela_cadastro.lineEdit.setText('')
-            self.tela_cadastro.lineEdit_2.setText('')
-            self.tela_cadastro.lineEdit_3.setText('')
-            self.tela_cadastro.lineEdit_4.setText('')
+            self.tela_cadastro.campo_nome.setText('')
+            self.tela_cadastro.campo_Sobrenome.setText('')
+            self.tela_cadastro.campo_cpf.setText('')
+            self.tela_cadastro.campo_NumeroConta.setText('')
+            QMessageBox.information(None, 'Banco', 'Cadastro realizado !')    
 
-        if(self.numero == '' or cpf == '' or sobrenome == '' or self.nome == ''): 
+        if(self.numero == '' or self.cpf == '' or self.sobrenome == '' or self.nome == ''): 
             QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')    
    
-    def abrirTelaLogado(self):
-        nome = self.tela_principal.lineEdit.text()
-        numero = self.tela_principal.lineEdit_2.text()
-        if not (nome == '' or numero == ''):
-            ret = self.banco.mostrar_contas(nome, numero) 
+    def abrirTelaBanco(self):
+        numero = self.tela_principal.campo_numeroConta.text()
+        cpf = self.tela_principal.campo_cpf.text()
+        if not (numero == '' or cpf == ''):
+            ret = self.banco.mostrar_contas(numero, cpf) 
             if(ret == True):
                 self.QtStack.setCurrentIndex(2)
-                self.tela_banco.lineEdit.setText(self.nome)
+                self.tela_banco.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+                self.tela_banco.campo_cpf.setText(self.cpf)
             else:
                 QMessageBox.information(None, 'Banco', 'Usuario nao encontrado')
-                self.tela_principal.lineEdit.setText('')
-                self.tela_principal.lineEdit_2.setText('')
+                self.tela_principal.campo_numeroConta.setText('')
+                self.tela_principal.campo_cpf.setText('')
         else: 
             QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')
 

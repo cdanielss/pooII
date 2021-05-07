@@ -6,12 +6,12 @@ class Banco():
    
    def criar_conta(self, nome, sobrenome, cpf, numero):
       cliente = Cliente(nome, sobrenome, cpf)
-      conta = Conta(cliente, numero, 500.0 )
+      conta = Conta(cliente, numero, 0.0 )
       self._contas[conta.get_numero] = conta
    
-   def mostrar_contas(self, nome, numero):
+   def mostrar_contas(self, numero, cpf):
       for y, x in self._contas.items():
-         if (nome == x.get_titular and numero == x.get_numero):
+         if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
             return True
       return None
    
@@ -19,8 +19,8 @@ class Banco():
       self._contas[numero].deposita(valor)
 
    def saldo(self, numero):
-      a = self._contas[numero].extrato()
-      return a
+      return self._contas[numero].get_saldo
+
 """ b = Banco()
 b.criar_conta('a', 'a', 'a', 'a')
 b.criar_conta('1', '1', '1', '1')
