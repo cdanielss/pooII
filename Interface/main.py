@@ -84,6 +84,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_deposito.botao_ok.clicked.connect(self.botaoDepositar)
         
         self.tela_historico.botao_sair.clicked.connect(self.abrirTelaBanco)
+        
         self.tela_transferir.botao_sair.clicked.connect(self.abrirTelaBanco)
         self.tela_transferir.botao_ok.clicked.connect(self.botaoTransferir)
         
@@ -115,6 +116,18 @@ class Main(QMainWindow, Ui_Main):
         else: 
             QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')
 
+    def abrirTelaHistorico(self):
+        self.QtStack.setCurrentIndex(4)
+        self.tela_historico.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
+        self.tela_historico.campo_cpf.setText(self.cliente.get_cpf)
+        historico = self.conta.get_historico
+        #parte que dá erro
+        #i = 0
+        #for x in historico[0]:    
+        #    self.tela_historico.campoLista_depositos.item(0).setText(x)
+        #    i += 1
+
+    
     def abrirTelaCadastro(self):
         self.QtStack.setCurrentIndex(1)
 
@@ -129,11 +142,6 @@ class Main(QMainWindow, Ui_Main):
         self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
         self.tela_transferir.campo_cpf.setText(self.cliente.get_cpf)
 
-    def abrirTelaHistorico(self):
-        self.QtStack.setCurrentIndex(4)
-        self.tela_historico.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_historico.campo_cpf.setText(self.cliente.get_cpf)
-    
     def abrirTelaDeposito(self):
         self.QtStack.setCurrentIndex(3)
         self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))

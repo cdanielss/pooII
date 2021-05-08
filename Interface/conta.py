@@ -12,32 +12,21 @@ class Historico:
    
    @property
    def get_deposito(self):
-      if self._deposito:
-         for x in self._deposito:
-            print(x)
-      else:
-         print('Sem histórico de depósitos') 
+      return self._deposito
 
    def deposito(self, d):
       self._deposito.append(d)
 
    @property
    def get_saque(self):
-      if self._saque:
-         for x in self._saque:
-            print(x)
-      else:
-         print('Sem histórico de saques') 
+      return self.get_saque
 
    def saque(self, s):
       self._saque.append(s)
 
    @property
    def get_transferencia(self):
-      if self._transferencia:
-         print(self._transferencia)
-      else:
-         print('Sem histórico de transferncias') 
+      return self._transferencia
 
    def transferencia(self, t):
       self._transferencia.append(t)
@@ -75,9 +64,7 @@ class Conta:
    
    @property
    def get_historico(self):
-      self._historico.get_deposito
-      self._historico.get_saque
-      self._historico.get_transferencia
+      return [self._historico.get_deposito,self._historico.get_saque,self._historico.get_transferencia]
 
    def depositar(self, valor):
       self._saldo += valor

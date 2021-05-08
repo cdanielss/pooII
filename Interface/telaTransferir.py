@@ -107,7 +107,7 @@ class TelaTransferir(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Sacar</span></p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Transferir</span></p></body></html>"))
         self.botao_sair.setText(_translate("MainWindow", "Sair"))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">Valor</span></p></body></html>"))
         self.botao_ok.setText(_translate("MainWindow", "OK"))
