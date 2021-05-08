@@ -9,14 +9,21 @@ class Banco():
       conta = Conta(cliente, numero, 0.0 )
       self._contas[conta.get_numero] = conta
    
-   def mostrar_contas(self, numero, cpf):
+   def verificar_conta(self, numero, cpf):
       for y, x in self._contas.items():
          if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
             return True
-      return None
+      return False
+   
+   def buscar_conta(self, numero):
+      return self._contas[numero]
+
    
    def depositar(self, numero, valor):
-      self._contas[numero].deposita(valor)
+      self._contas[numero].depositar(valor)
+   
+   def sacar(self, numero, valor):
+      self._contas[numero].sacar(valor)
 
    def saldo(self, numero):
       return self._contas[numero].get_saldo

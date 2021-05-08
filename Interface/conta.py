@@ -79,19 +79,15 @@ class Conta:
       self._historico.get_saque
       self._historico.get_transferencia
 
-   def deposita(self, valor):
+   def depositar(self, valor):
       self._saldo += valor
-      self._historico.deposito(['Depósito de: ', valor]) 
+      self._historico.deposito(['Depósito de: ', str(valor)]) 
    
-   def saca(self, valor):
-      if self._saldo >= valor:
-         self._saldo -= valor
-         self._historico.saque(['Saque de: ', valor])
+   def sacar(self, valor):
+      self._saldo -= valor
+      self._historico.saque(['Saque de: ', str(valor)])
    
-   #def extrato(self):
-    #  return self._saldo
-   
-   def transfere(self, conta, valor):
+   def transferir(self, conta, valor):
       if self._saldo >= valor:
          self._saldo -= valor
          conta._saldo += valor
