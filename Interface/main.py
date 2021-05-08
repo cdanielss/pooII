@@ -118,9 +118,13 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaHistorico(self):
         self.QtStack.setCurrentIndex(4)
+        
+
         self.tela_historico.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
         self.tela_historico.campo_cpf.setText(self.cliente.get_cpf)
-        historico = self.conta.get_historico
+        historicoD = self.conta.get_historico
+        self.tela_historico.campoLista_depositos.item(0).setText(str(historicoD))
+        #self.tela_historico.campoLista_depositos_2.setText(str(historicoS))
         #parte que dá erro
         #i = 0
         #for x in historico[0]:    

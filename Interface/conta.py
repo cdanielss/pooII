@@ -64,8 +64,10 @@ class Conta:
    
    @property
    def get_historico(self):
-      return [self._historico.get_deposito,self._historico.get_saque,self._historico.get_transferencia]
-
+      #return [self._historico.get_deposito,self._historico.get_saque,self._historico.get_transferencia]
+      return self._historico.get_deposito
+     
+   
    def depositar(self, valor):
       self._saldo += valor
       self._historico.deposito(['Depósito de: ', str(valor)]) 

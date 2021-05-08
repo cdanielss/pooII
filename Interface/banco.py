@@ -21,7 +21,7 @@ class Banco():
    
    def depositar(self, numero, valor):
       self._contas[numero].depositar(valor)
-   
+      
    def sacar(self, numero, valor):
       self._contas[numero].sacar(valor)
 
