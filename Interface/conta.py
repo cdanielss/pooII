@@ -1,6 +1,6 @@
 
 
-
+from datetime import datetime
 
 class Historico:
    __slots__ = ['_deposito','_saque','_transferencia']
@@ -19,7 +19,7 @@ class Historico:
 
    @property
    def get_saque(self):
-      return self.get_saque
+      return self._saque
 
    def saque(self, s):
       self._saque.append(s)
@@ -64,24 +64,24 @@ class Conta:
    
    @property
    def get_historico(self):
-      #return [self._historico.get_deposito,self._historico.get_saque,self._historico.get_transferencia]
-      return self._historico.get_deposito
+      return [self._historico.get_deposito, self._historico.get_saque, self._historico.get_transferencia]
+      #return self._historico.get_deposito
      
    
    def depositar(self, valor):
       self._saldo += valor
-      self._historico.deposito(['Depósito de: ', str(valor)]) 
+      self._historico.deposito(['Depósito de: ', str(valor), 'Data: ', datetime.now().strftime('%d/%m/%Y %H:%M')]) 
    
    def sacar(self, valor):
       self._saldo -= valor
-      self._historico.saque(['Saque de: ', str(valor)])
+      self._historico.saque(['Saque de: ', str(valor), 'Data: ', datetime.now().strftime('%d/%m/%Y %H:%M')])
    
    def transferir(self, conta, valor):
       if self._saldo >= valor:
          self._saldo -= valor
          conta._saldo += valor
-         conta._historico.transferencia(['Valor recebido: ', valor, 'de: ', self._titular.get_nome])
-         self._historico.transferencia(['TEV de: ', valor, 'para: ', conta._titular.get_nome])
+         conta._historico.transferencia(['Valor recebido: ', valor, 'de: ', self._titular.get_nome, 'Data: ', datetime.now().strftime('%d/%m/%Y %H:%M')])
+         self._historico.transferencia(['TEV de: ', valor, 'para: ', conta._titular.get_nome, 'Data: ', datetime.now().strftime('%d/%m/%Y %H:%M')])
       else:
          print('\nSaldo insuficiente')
 

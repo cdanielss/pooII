@@ -118,20 +118,31 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaHistorico(self):
         self.QtStack.setCurrentIndex(4)
-        
-
         self.tela_historico.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
         self.tela_historico.campo_cpf.setText(self.cliente.get_cpf)
-        historicoD = self.conta.get_historico
-        self.tela_historico.campoLista_depositos.item(0).setText(str(historicoD))
-        #self.tela_historico.campoLista_depositos_2.setText(str(historicoS))
-        #parte que dá erro
-        #i = 0
-        #for x in historico[0]:    
-        #    self.tela_historico.campoLista_depositos.item(0).setText(x)
-        #    i += 1
+        
+        historico = self.conta.get_historico
+        for i in range(10):
+            self.tela_historico.campoLista_depositos.item(i).setText('')
+            self.tela_historico.campoLista_saque.item(i).setText('')
+            self.tela_historico.campoLista_transferencia.item(i).setText('')
+        
+        i = 0
+        for x in historico[0]:    
+            self.tela_historico.campoLista_depositos.item(i).setText(str(x))
+            i += 1
+        
+        i = 0
+        for y in historico[1]:    
+            self.tela_historico.campoLista_saque.item(i).setText(str(y))
+            i += 1
+        
+        i = 0
+        for z in historico[2]:    
+            self.tela_historico.campoLista_transferencia.item(i).setText(str(z))
+            i += 1
 
-    
+
     def abrirTelaCadastro(self):
         self.QtStack.setCurrentIndex(1)
 

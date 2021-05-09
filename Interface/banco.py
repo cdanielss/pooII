@@ -19,20 +19,6 @@ class Banco():
       return self._contas[numero]
 
    
-   def depositar(self, numero, valor):
-      self._contas[numero].depositar(valor)
-      
-   def sacar(self, numero, valor):
-      self._contas[numero].sacar(valor)
-
-   def saldo(self, numero):
-      return self._contas[numero].get_saldo
-
-""" b = Banco()
-b.criar_conta('a', 'a', 'a', 'a')
-b.criar_conta('1', '1', '1', '1')
-b.mostrar_contas('1', 'a') """
-
 
 
 
