@@ -1,3 +1,12 @@
+
+import socket
+
+ip = 'localhost'
+porta = 8020
+endereco = ((ip,porta))
+cliente_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+cliente_socket.connect(endereco)
+
 import sys
 import os
 
@@ -13,8 +22,6 @@ from telaHistorico import TelaHistorico
 from telaSaldo import TelaSaldo
 from telaSaque import TelaSaque
 from telaTransferir import TelaTransferir
-from conta import Cliente, Conta, Historico
-from banco import Banco
 
 class Ui_Main(QtWidgets.QWidget):
     def setupUi(self, Main):
@@ -63,12 +70,14 @@ class Main(QMainWindow, Ui_Main):
         super(Main, self).__init__(parent)
         self.setupUi(self)
         
-
-        self.banco = Banco()
-        self.conta = None
-        self.cliente = None
+        self.nome = None
+        self.sobrenome = None
+        self.numero_conta = None
+        self.cpf = None
+        
         self.tela_principal.botao_entrar.clicked.connect(self.abrirTelaBanco)
         self.tela_principal.botao_cadastrar.clicked.connect(self.abrirTelaCadastro)
+        self.tela_principal.botao_sair.clicked.connect(self.botaoFecharPrograma)
 
         self.tela_cadastro.botao_voltar.clicked.connect(self.abrirTelaHome)
         self.tela_cadastro.botao_salvar.clicked.connect(self.botaoCadastra)
@@ -97,26 +106,41 @@ class Main(QMainWindow, Ui_Main):
     #Telas
 
     def abrirTelaBanco(self):
-        numero = self.tela_principal.campo_numeroConta.text()
-        cpf = self.tela_principal.campo_cpf.text()
+        self.numero_conta = self.tela_principal.campo_numeroConta.text()
+        self.cpf = self.tela_principal.campo_cpf.text()
 
-        if not (numero == '' or cpf == ''):
-            if(self.banco.verificar_conta(numero, cpf) ):
-                #Informações do usuário logado
-                self.conta = self.banco.buscar_conta(numero)
-                self.cliente = self.conta.get_titular
-                #----
-                self.QtStack.setCurrentIndex(2)
-                self.tela_banco.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-                self.tela_banco.campo_cpf.setText(self.cliente.get_cpf)
-            else:
-                QMessageBox.information(None, 'Banco', 'Usuario nao encontrado')
-                self.tela_principal.campo_numeroConta.setText('')
-                self.tela_principal.campo_cpf.setText('')
+        if not (self.numero_conta == '' or self.cpf == ''):
+            msg = '2'
+            cliente_socket.send(msg.encode())
+            if cliente_socket.recv(1024).decode() == 'confirma':
+                #mandar o numero e o cpf para verificar a conta
+                cliente_socket.send(self.numero_conta.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                cliente_socket.send(self.cpf.encode())
+
+                verificar_conta = cliente_socket.recv(1024).decode()
+
+                if(verificar_conta == 'True'):
+                    #Informações do usuário logado
+                    
+                    self.nome = cliente_socket.recv(1024).decode()
+                    cliente_socket.send('confirma'.encode())
+                    self.sobrenome = cliente_socket.recv(1024).decode()
+                    
+                    self.QtStack.setCurrentIndex(2)
+                    self.tela_banco.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+                    self.tela_banco.campo_cpf.setText(self.cpf)
+                else:
+                    QMessageBox.information(None, 'Banco', 'Usuario nao encontrado')
+                    self.tela_principal.campo_numeroConta.setText('')
+                    self.tela_principal.campo_cpf.setText('')
         else: 
             QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')
+        
+
 
     def abrirTelaHistorico(self):
+        '''
         self.QtStack.setCurrentIndex(4)
         self.tela_historico.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
         self.tela_historico.campo_cpf.setText(self.cliente.get_cpf)
@@ -141,31 +165,33 @@ class Main(QMainWindow, Ui_Main):
         for z in historico[2]:    
             self.tela_historico.campoLista_transferencia.item(i).setText(str(z))
             i += 1
-
+        '''
 
     def abrirTelaCadastro(self):
         self.QtStack.setCurrentIndex(1)
 
     def abrirTelaSaldo(self):
+        '''
         self.QtStack.setCurrentIndex(5)
         self.tela_saldo.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
         self.tela_saldo.campo_cpf.setText(self.cliente.get_cpf)
         self.tela_saldo.campo_saldo.setText(str(self.conta.get_saldo))
-    
+        '''
+
     def abrirTelaTransferir(self):
         self.QtStack.setCurrentIndex(7)
-        self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_transferir.campo_cpf.setText(self.cliente.get_cpf)
+        #self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
+        #self.tela_transferir.campo_cpf.setText(self.cliente.get_cpf)
 
     def abrirTelaDeposito(self):
         self.QtStack.setCurrentIndex(3)
-        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_deposito.campo_cpf.setText(self.cliente.get_cpf)
+        #self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
+        #self.tela_deposito.campo_cpf.setText(self.cliente.get_cpf)
 
     def abrirTelaSaque(self):
         self.QtStack.setCurrentIndex(6)
-        self.tela_saque.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_saque.campo_cpf.setText(self.cliente.get_cpf)
+        #self.tela_saque.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
+        #self.tela_saque.campo_cpf.setText(self.cliente.get_cpf)
 
     def abrirTelaHome(self):
         self.QtStack.setCurrentIndex(0)
@@ -180,18 +206,37 @@ class Main(QMainWindow, Ui_Main):
         numero = self.tela_cadastro.campo_NumeroConta.text()
         
         if not (numero == '' or cpf == '' or sobrenome == '' or nome == ''):
-            self.banco.criar_conta(nome, sobrenome, cpf, numero)
-            self.QtStack.setCurrentIndex(0)
-            self.tela_cadastro.campo_nome.setText('')
-            self.tela_cadastro.campo_Sobrenome.setText('')
-            self.tela_cadastro.campo_cpf.setText('')
-            self.tela_cadastro.campo_NumeroConta.setText('')
-            QMessageBox.information(None, 'Banco', 'Cadastro realizado !')    
+            
+            #mandando informações para o servidor
+            msg = '1'
+            cliente_socket.send(msg.encode())
+            if cliente_socket.recv(1024).decode() == 'confirma':
+                
+                    cliente_socket.send(nome.encode())
+                    confirma = cliente_socket.recv(1024).decode()
+                    cliente_socket.send(sobrenome.encode())
+                    confirma = cliente_socket.recv(1024).decode()
+                    cliente_socket.send(cpf.encode())
+                    confirma = cliente_socket.recv(1024).decode()
+                    cliente_socket.send(numero.encode())
+                    confirma = cliente_socket.recv(1024).decode()
+
+                    self.QtStack.setCurrentIndex(0)
+                    self.tela_cadastro.campo_nome.setText('')
+                    self.tela_cadastro.campo_Sobrenome.setText('')
+                    self.tela_cadastro.campo_cpf.setText('')
+                    self.tela_cadastro.campo_NumeroConta.setText('')
+                    QMessageBox.information(None, 'Banco', 'Cadastro realizado !')
+                
 
         if(numero == '' or cpf == '' or sobrenome == '' or nome == ''): 
-            QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')    
+            QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')  
+        
+
+          
 
     def botaoDepositar(self):
+        '''
         self.QtStack.setCurrentIndex(3)
         self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome) )
         self.tela_deposito.campo_cpf.setText(self.cliente.get_cpf)
@@ -203,8 +248,10 @@ class Main(QMainWindow, Ui_Main):
             QMessageBox.information(None, 'Banco', 'Depósito efetuado !')
         except:
             QMessageBox.information(None, 'Banco', 'Valor incorreto')
+        '''
 
     def botaoSacar(self):
+        '''
         self.QtStack.setCurrentIndex(6)
         self.tela_saque.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
         self.tela_saque.campo_cpf.setText(self.cliente.get_cpf)
@@ -217,8 +264,10 @@ class Main(QMainWindow, Ui_Main):
             QMessageBox.information(None, 'Banco', 'Saque efetuado !')
         else: 
             QMessageBox.information(None, 'Banco', 'Valor indisponível')
+        '''
 
     def botaoTransferir(self):
+        '''
         self.QtStack.setCurrentIndex(7)
         self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome) )
         self.tela_transferir.campo_cpf.setText(self.cliente.get_cpf)
@@ -237,8 +286,14 @@ class Main(QMainWindow, Ui_Main):
                 QMessageBox.information(None, 'Banco', 'Dados incorretos')
         else: 
             QMessageBox.information(None, 'Banco', 'Saldo indisponível')
+        '''
 
-        
+    def botaoFecharPrograma(self):
+        msg = 'sair'
+        cliente_socket.send(msg.encode())
+        #cliente_socket.close()
+        app.exit()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

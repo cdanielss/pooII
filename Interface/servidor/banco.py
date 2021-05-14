@@ -12,8 +12,8 @@ class Banco():
    def verificar_conta(self, numero, cpf):
       for y, x in self._contas.items():
          if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
-            return True
-      return False
+            return 'True'
+      return 'False'
    
    def buscar_conta(self, numero):
       return self._contas[numero]
