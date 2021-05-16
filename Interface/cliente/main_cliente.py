@@ -144,29 +144,40 @@ class Main(QMainWindow, Ui_Main):
         self.QtStack.setCurrentIndex(4)
         self.tela_historico.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
         self.tela_historico.campo_cpf.setText(self.cpf)
-        '''
-        historico = self.conta.get_historico
+
+        msg = '7'
+        confirma = 'confirma'
+        cliente_socket.send(msg.encode())
+        listaDepositos = cliente_socket.recv(1024).decode()
+        listaDepositos = eval(listaDepositos)
+        cliente_socket.send(confirma.encode())
+        listaSaques = cliente_socket.recv(1024).decode()
+        listaSaques = eval(listaSaques)
+        cliente_socket.send(confirma.encode())
+        listaTransferencias = cliente_socket.recv(1024).decode()
+        listaTransferencias = eval(listaTransferencias)
+        cliente_socket.send(confirma.encode())
+        confirma = cliente_socket.recv(1024).decode()
         for i in range(10):
             self.tela_historico.campoLista_depositos.item(i).setText('')
             self.tela_historico.campoLista_saque.item(i).setText('')
             self.tela_historico.campoLista_transferencia.item(i).setText('')
         
         i = 0
-        for x in historico[0]:    
+        for x in listaDepositos:    
             self.tela_historico.campoLista_depositos.item(i).setText(str(x))
             i += 1
-        
+
         i = 0
-        for y in historico[1]:    
+        for y in listaSaques:    
             self.tela_historico.campoLista_saque.item(i).setText(str(y))
             i += 1
-        
+
         i = 0
-        for z in historico[2]:    
+        for z in listaTransferencias:    
             self.tela_historico.campoLista_transferencia.item(i).setText(str(z))
             i += 1
-        '''
-
+        
     def abrirTelaCadastro(self):
         self.QtStack.setCurrentIndex(1)
 

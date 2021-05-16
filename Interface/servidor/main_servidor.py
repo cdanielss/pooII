@@ -1,4 +1,3 @@
-
 import socket
 
 ip = 'localhost'
@@ -91,6 +90,19 @@ while(msg != 'sair'):
       conta.transferir(contaDestino, float(valor))
       con.send(confirma.encode())
 
+   #saque
+   elif msg == '7':
+      historico = conta.get_historico
+      listaDepositos = str(historico[0])
+      listaSaques = str(historico[1])
+      listaTransferencias = str(historico[2])
+      con.send(listaDepositos.encode())
+      con.recv(1024).decode()
+      con.send(listaSaques.encode())
+      con.recv(1024).decode()
+      con.send(listaTransferencias.encode())
+      con.recv(1024).decode()
+      con.send('confirma'.encode())
 servidor_socket.close()
 
 
