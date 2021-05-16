@@ -2,7 +2,7 @@
 import socket
 
 ip = 'localhost'
-porta = 8020
+porta = 8000
 endereco = ((ip,porta))
 
 servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #cria o socket
@@ -60,7 +60,19 @@ while(msg != 'sair'):
          con.send(nome.encode())
          confirma = con.recv(1024).decode()   
          con.send(sobrenome.encode())
-      
+   #deposito
+   elif msg == '3':
+      confir = 'confirma'
+      con.send(confir.encode())
+      valor = con.recv(1024).decode()
+      conta.depositar(valor)
+      con.send(confir.encode())
+   #saldo 
+   elif msg == '4':
+      confir = str(conta.get_saldo)
+      con.send(confir.encode())
+
+
       
 servidor_socket.close()
 

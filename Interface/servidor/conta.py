@@ -69,7 +69,7 @@ class Conta:
      
    
    def depositar(self, valor):
-      self._saldo += valor
+      self._saldo += float(valor)
       self._historico.deposito(['Depósito de: ', str(valor), 'Data: ', datetime.now().strftime('%d/%m/%Y %H:%M')]) 
    
    def sacar(self, valor):

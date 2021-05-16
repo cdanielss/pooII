@@ -2,7 +2,7 @@
 import socket
 
 ip = 'localhost'
-porta = 8020
+porta = 8000
 endereco = ((ip,porta))
 cliente_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 cliente_socket.connect(endereco)
@@ -171,12 +171,13 @@ class Main(QMainWindow, Ui_Main):
         self.QtStack.setCurrentIndex(1)
 
     def abrirTelaSaldo(self):
-        '''
         self.QtStack.setCurrentIndex(5)
-        self.tela_saldo.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_saldo.campo_cpf.setText(self.cliente.get_cpf)
-        self.tela_saldo.campo_saldo.setText(str(self.conta.get_saldo))
-        '''
+        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
+        self.tela_deposito.campo_cpf.setText(self.cpf)
+        msg = '4'
+        cliente_socket.send(msg.encode())
+        self.tela_saldo.campo_saldo.setText(cliente_socket.recv(1024).decode())
+        
 
     def abrirTelaTransferir(self):
         self.QtStack.setCurrentIndex(7)
@@ -185,8 +186,8 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaDeposito(self):
         self.QtStack.setCurrentIndex(3)
-        #self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        #self.tela_deposito.campo_cpf.setText(self.cliente.get_cpf)
+        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
+        self.tela_deposito.campo_cpf.setText(self.cpf)
 
     def abrirTelaSaque(self):
         self.QtStack.setCurrentIndex(6)
@@ -236,19 +237,23 @@ class Main(QMainWindow, Ui_Main):
           
 
     def botaoDepositar(self):
-        '''
+        
         self.QtStack.setCurrentIndex(3)
-        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome) )
-        self.tela_deposito.campo_cpf.setText(self.cliente.get_cpf)
+        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
+        self.tela_deposito.campo_cpf.setText(self.cpf)
         valor = self.tela_deposito.campo_valor.text()
         try:
-            self.conta.depositar( float(valor) )
-            self.tela_deposito.campo_valor.setText('')
-            self.QtStack.setCurrentIndex(2)
-            QMessageBox.information(None, 'Banco', 'Depósito efetuado !')
+            msg = '3'
+            cliente_socket.send(msg.encode())
+            if cliente_socket.recv(1024).decode() == 'confirma':
+                cliente_socket.send(valor.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                self.tela_deposito.campo_valor.setText('')
+                self.QtStack.setCurrentIndex(2)
+                QMessageBox.information(None, 'Banco', 'Depósito efetuado !')
         except:
             QMessageBox.information(None, 'Banco', 'Valor incorreto')
-        '''
+        
 
     def botaoSacar(self):
         '''
