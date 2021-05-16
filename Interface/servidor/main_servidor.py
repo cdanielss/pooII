@@ -71,9 +71,26 @@ while(msg != 'sair'):
    elif msg == '4':
       confir = str(conta.get_saldo)
       con.send(confir.encode())
+   #saque
+   elif msg == '5':
+      saldo = str(conta.get_saldo)
+      con.send(saldo.encode())
+      valor = con.recv(1024).decode()
+      conta.sacar(float(valor))
+      confirma = 'confirma'
+      con.send(confirma.encode())
+   #saque
+   elif msg == '6':
+      confirma = 'confirma'
+      saldo = str(conta.get_saldo)
+      con.send(saldo.encode())
+      valor = con.recv(1024).decode()
+      con.send(confirma.encode())
+      numero_contaDestino = con.recv(1024).decode()
+      contaDestino = banco.buscar_conta(numero_contaDestino)
+      conta.transferir(contaDestino, float(valor))
+      con.send(confirma.encode())
 
-
-      
 servidor_socket.close()
 
 

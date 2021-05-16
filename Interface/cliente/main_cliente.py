@@ -140,11 +140,11 @@ class Main(QMainWindow, Ui_Main):
 
 
     def abrirTelaHistorico(self):
-        '''
-        self.QtStack.setCurrentIndex(4)
-        self.tela_historico.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_historico.campo_cpf.setText(self.cliente.get_cpf)
         
+        self.QtStack.setCurrentIndex(4)
+        self.tela_historico.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_historico.campo_cpf.setText(self.cpf)
+        '''
         historico = self.conta.get_historico
         for i in range(10):
             self.tela_historico.campoLista_depositos.item(i).setText('')
@@ -172,8 +172,8 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaSaldo(self):
         self.QtStack.setCurrentIndex(5)
-        self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
-        self.tela_deposito.campo_cpf.setText(self.cpf)
+        self.tela_saldo.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
+        self.tela_saldo.campo_cpf.setText(self.cpf)
         msg = '4'
         cliente_socket.send(msg.encode())
         self.tela_saldo.campo_saldo.setText(cliente_socket.recv(1024).decode())
@@ -181,8 +181,8 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaTransferir(self):
         self.QtStack.setCurrentIndex(7)
-        #self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        #self.tela_transferir.campo_cpf.setText(self.cliente.get_cpf)
+        self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_transferir.campo_cpf.setText(self.cpf)
 
     def abrirTelaDeposito(self):
         self.QtStack.setCurrentIndex(3)
@@ -191,8 +191,8 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaSaque(self):
         self.QtStack.setCurrentIndex(6)
-        #self.tela_saque.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        #self.tela_saque.campo_cpf.setText(self.cliente.get_cpf)
+        self.tela_saque.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_saque.campo_cpf.setText(self.cpf)
 
     def abrirTelaHome(self):
         self.QtStack.setCurrentIndex(0)
@@ -256,42 +256,53 @@ class Main(QMainWindow, Ui_Main):
         
 
     def botaoSacar(self):
-        '''
         self.QtStack.setCurrentIndex(6)
-        self.tela_saque.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome))
-        self.tela_saque.campo_cpf.setText(self.cliente.get_cpf)
+        self.tela_saque.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
+        self.tela_saque.campo_cpf.setText(self.cpf)
         valor = self.tela_saque.campo_valor.text()
-        saldo = self.conta.get_saldo
-        if ((saldo != 0.0) and (float(valor) <= saldo)):
-            self.conta.sacar( float(valor) )
-            self.tela_saque.campo_valor.setText('')
-            self.QtStack.setCurrentIndex(2)
-            QMessageBox.information(None, 'Banco', 'Saque efetuado !')
-        else: 
-            QMessageBox.information(None, 'Banco', 'Valor indisponível')
-        '''
+        try:
+            msg = '5'
+            cliente_socket.send(msg.encode())
+            saldo = cliente_socket.recv(1024).decode()
+            if ((float(saldo) != 0.0) and (float(valor) <= float(saldo))):
+                cliente_socket.send(valor.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                self.tela_saque.campo_valor.setText('')
+                self.QtStack.setCurrentIndex(2)
+                QMessageBox.information(None, 'Banco', 'Saque efetuado !')
+            else: 
+                QMessageBox.information(None, 'Banco', 'Valor indisponível')
+        except:
+            QMessageBox.information(None, 'Banco', 'Erro')
+        
 
     def botaoTransferir(self):
-        '''
         self.QtStack.setCurrentIndex(7)
-        self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.cliente.get_nome,self.cliente.get_sobrenome) )
-        self.tela_transferir.campo_cpf.setText(self.cliente.get_cpf)
+        self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome) )
+        self.tela_transferir.campo_cpf.setText(self.cpf)
         numero_contaDestino = self.tela_transferir.campo_contaDestino.text()
         valor = self.tela_transferir.campo_valor.text()
-        #contaDestino = self.banco.buscar_conta(numero_contaDestino)
-        saldo = self.conta.get_saldo
-        if ((saldo != 0.0) and (float(valor) <= saldo)):
-            try:
-                self.conta.transferir( self.banco.buscar_conta(numero_contaDestino), float(valor) )
-                self.tela_transferir.campo_valor.setText('')
-                self.tela_transferir.campo_contaDestino.setText('')
-                self.QtStack.setCurrentIndex(2)
-                QMessageBox.information(None, 'Banco', 'Transferência efetuada !')
-            except:
-                QMessageBox.information(None, 'Banco', 'Dados incorretos')
-        else: 
-            QMessageBox.information(None, 'Banco', 'Saldo indisponível')
-        '''
+
+        try:
+            msg = '6'
+            cliente_socket.send(msg.encode())
+            saldo = cliente_socket.recv(1024).decode()
+            if ((float(saldo) != 0.0) and (float(valor) <= float(saldo))):
+                try:
+                    cliente_socket.send(valor.encode())
+                    confirma = cliente_socket.recv(1024).decode()
+                    cliente_socket.send(numero_contaDestino.encode())
+                    confirma = cliente_socket.recv(1024).decode()
+                    self.tela_transferir.campo_valor.setText('')
+                    self.tela_transferir.campo_contaDestino.setText('')
+                    self.QtStack.setCurrentIndex(2)
+                    QMessageBox.information(None, 'Banco', 'Transferência efetuada !')
+                except:
+                    QMessageBox.information(None, 'Banco', 'Dados incorretos')
+            else: 
+                QMessageBox.information(None, 'Banco', 'Saldo indisponível')
+        except:
+            QMessageBox.information(None, 'Banco', 'Erro')
 
     def botaoFecharPrograma(self):
         msg = 'sair'
