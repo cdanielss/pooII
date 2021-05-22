@@ -1,9 +1,7 @@
-
 """
    DESCRIPTION
-   Classe que e responsavel pela exibicao das telas dos do sistema e por mandar os 
-   dados recebidos do usuario para o servidor. 
-   
+   Arquivo principal do Servidor, responsavel por receber todos os dados
+   do Cliente e fazer a conexao com os arquivos do Banco.
 """
 
 import socket
@@ -12,18 +10,38 @@ ip = 'localhost'
 porta = 8000
 endereco = ((ip,porta))
 
-servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #cria o socket
-servidor_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #reinicializa o socket
-servidor_socket.bind(endereco) #define a porta e quais endereços podem se conectar com o servidor
-servidor_socket.listen(10) #limite de conexões
+servidor_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+servidor_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
+servidor_socket.bind(endereco) 
+servidor_socket.listen(10) 
 
 print('Aguardando conexão...')
-con, cliente = servidor_socket.accept() #servidor aguardando conexão
+con, cliente = servidor_socket.accept() 
 print('Conectado !')
 
 from banco import Banco
 banco = Banco()
 conta = None
+
+"""
+   :Logica:
+      Recebe um codigo do Cliente, que com esse codigo sera feito a execucao das funcoes 
+      expecificas 
+   :Mensagem == 1: 
+      Ira Criar a conta
+   :Mensagem == 2: 
+      Verifica se a conta recebida existe, e envia seus dados para o Cliente
+   :Mensagem == 3: 
+      Faz o deposito
+   :Mensagem == 4: 
+      Envia o Saldo para o Cliente
+   :Mensagem == 5: 
+      Faz o saque da conta
+   :Mensagem == 6: 
+      Faz a transferencia entre contas
+   :Mensagem = 7: 
+      Envia o historico da conta para o Cliente 
+"""
 
 msg = ''
 while(msg != 'sair'):
@@ -86,7 +104,7 @@ while(msg != 'sair'):
       conta.sacar(float(valor))
       confirma = 'confirma'
       con.send(confirma.encode())
-   #saque
+   #transferencia
    elif msg == '6':
       confirma = 'confirma'
       saldo = str(conta.get_saldo)
@@ -98,7 +116,7 @@ while(msg != 'sair'):
       conta.transferir(contaDestino, float(valor))
       con.send(confirma.encode())
 
-   #saque
+   #historico
    elif msg == '7':
       historico = conta.get_historico
       listaDepositos = str(historico[0])
@@ -112,6 +130,7 @@ while(msg != 'sair'):
       con.recv(1024).decode()
       con.send('confirma'.encode())
 servidor_socket.close()
+
 
 
 
