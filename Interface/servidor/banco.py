@@ -1,21 +1,61 @@
+"""
+   DESCRIPTION
+   Classe que e responsavel por armazenar os dados das contas
+   
+"""
+
 from conta import Conta, Cliente
 
 class Banco():
-   def __init__(self):         
+   def __init__(self):
       self._contas = {}
    
+   
    def criar_conta(self, nome, sobrenome, cpf, numero):
+      """
+      DESCRIPTION
+      Funcao que cria uma conta e insere na lista de contas do banco 
+      
+      :param nome: string
+         Nome do cliente
+      :param sobrenome: string
+         Sobrenome do cliente
+      :param cpf: string
+         Cpf do Cliente
+      :param numero: string
+         Numero da Conta criada
+      """
       cliente = Cliente(nome, sobrenome, cpf)
       conta = Conta(cliente, numero, 0.0 )
       self._contas[conta.get_numero] = conta
    
    def verificar_conta(self, numero, cpf):
+      """
+      DESCRIPTION
+      Funcao que verifica se uma conta existe
+      
+      :param numero: string
+         Numero da Conta criada
+      :param cpf: string
+         Cpf do Cliente
+      :return:
+         Vai retornar True se caso existir a conta, se não, retorna False 
+      """
       for y, x in self._contas.items():
          if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
             return 'True'
       return 'False'
    
    def buscar_conta(self, numero):
+      """
+      DESCRIPTION
+      Funcao que busca uma conta
+      
+      :param numero: string
+         Numero da Conta criada
+      :return:
+         Vai retornar uma conta que tiver o numero passado por parametro  
+      """
       return self._contas[numero]
 
    
