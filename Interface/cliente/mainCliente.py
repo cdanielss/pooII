@@ -1,4 +1,3 @@
-
 import socket
 
 ip = 'localhost'
@@ -23,8 +22,23 @@ from telaSaldo import TelaSaldo
 from telaSaque import TelaSaque
 from telaTransferir import TelaTransferir
 
+"""
+   DESCRIPTION
+   Classe que e responsavel pela exibicao das telas dos do sistema e por mandar os 
+   dados recebidos do usuario para o servidor. 
+   
+"""
+
 class Ui_Main(QtWidgets.QWidget):
     def setupUi(self, Main):
+      
+        """
+        DESCRIPTION
+        Classe que e responsavel pela exibicao das telas dos do sistema e por mandar os 
+        dados recebidos do usuario para o servidor. 
+        
+        """  
+        
         Main.setObjectName("Main")
         Main.resize(480, 640)
         
@@ -65,6 +79,13 @@ class Ui_Main(QtWidgets.QWidget):
         self.QtStack.addWidget(self.stack6)
         self.QtStack.addWidget(self.stack7)
     
+
+"""
+   DESCRIPTION
+   Classe que e responsavel pela exibicao das telas dos do sistema e por mandar os 
+   dados recebidos do usuario para o servidor. 
+   
+"""
 class Main(QMainWindow, Ui_Main):
     def __init__(self, parent = None):
         super(Main, self).__init__(parent)
@@ -106,6 +127,22 @@ class Main(QMainWindow, Ui_Main):
     #Telas
 
     def abrirTelaBanco(self):
+
+        """
+        DESCRIPTION
+        Funcao responsavel pela realizacao do login do usuario no sistema
+        
+        :Condicao 1: 
+            Verifica se o numero da conta e o cpf são vazios e envia o código com a opcao para
+            o servidor verificar a aconta.
+
+        :Condicao 2: 
+            Envia numero da conta e o cpf do cliente para o servidor verificar a aconta.        
+
+        :Condicao 3: 
+            Se a conta existir o usuario e direcionado para a tela do banco
+        
+        """
         self.numero_conta = self.tela_principal.campo_numeroConta.text()
         self.cpf = self.tela_principal.campo_cpf.text()
 
@@ -141,6 +178,15 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaHistorico(self):
         
+        """
+        DESCRIPTION
+        Funcao responsavel pela exibicao do historico de movimentacoes na conta do usuario.
+        
+        :Logica: 
+            Utiliza lacos de repeticao para percorrer as listas de: deposito, saque e transferencia
+            recebidas do servidor, e exibi-las na tela do historico.
+            
+        """
         self.QtStack.setCurrentIndex(4)
         self.tela_historico.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
         self.tela_historico.campo_cpf.setText(self.cpf)
@@ -179,9 +225,22 @@ class Main(QMainWindow, Ui_Main):
             i += 1
         
     def abrirTelaCadastro(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por chamar a tela de cadastro.
+            
+        """
         self.QtStack.setCurrentIndex(1)
 
     def abrirTelaSaldo(self):
+        """
+        DESCRIPTION
+        Funcao responsavel pela exibicao do saldo da conta do usuario.
+        
+        :Logica: 
+            Envia o codigo para o servidor, com o requerimento do saldo da conta.
+            
+        """
         self.QtStack.setCurrentIndex(5)
         self.tela_saldo.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
         self.tela_saldo.campo_cpf.setText(self.cpf)
@@ -191,27 +250,57 @@ class Main(QMainWindow, Ui_Main):
         
 
     def abrirTelaTransferir(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por chamar a tela de transferencia.
+        """
         self.QtStack.setCurrentIndex(7)
         self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
         self.tela_transferir.campo_cpf.setText(self.cpf)
 
     def abrirTelaDeposito(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por chamar a tela de deposito.
+        """
         self.QtStack.setCurrentIndex(3)
         self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
         self.tela_deposito.campo_cpf.setText(self.cpf)
 
     def abrirTelaSaque(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por chamar a tela de saque.
+        """
         self.QtStack.setCurrentIndex(6)
         self.tela_saque.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
         self.tela_saque.campo_cpf.setText(self.cpf)
 
     def abrirTelaHome(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por chamar a tela principal.
+        """
         self.QtStack.setCurrentIndex(0)
         
 
     #Botões
 
     def botaoCadastra(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por ler os dados do usuario para criar a conta que ira ser salva no banco.
+         
+        :Condicao 1: 
+            Verifica se os campos sao vazios.
+
+        :Condicao 2: 
+            Envia os dados para o servidor, para serem salvos.
+
+        :Condicao 3: 
+            Exibe uma mensagem de erro.
+       
+        """
         nome = self.tela_cadastro.campo_nome.text()
         sobrenome = self.tela_cadastro.campo_Sobrenome.text()
         cpf = self.tela_cadastro.campo_cpf.text()
@@ -245,10 +334,14 @@ class Main(QMainWindow, Ui_Main):
             QMessageBox.information(None, 'Banco', 'Todos os valores devem ser preenchidos')  
         
 
-          
-
     def botaoDepositar(self):
-        
+        """
+        DESCRIPTION
+        Funcao responsavel por enviar um valor para depósito em uma conta.
+         
+        :Logica: 
+            Ler o valor de deposito do usuario e enviar para o servidor. 
+        """
         self.QtStack.setCurrentIndex(3)
         self.tela_deposito.campo_nome.setText('{0} {1}'.format(self.nome, self.sobrenome) )
         self.tela_deposito.campo_cpf.setText(self.cpf)
@@ -267,6 +360,15 @@ class Main(QMainWindow, Ui_Main):
         
 
     def botaoSacar(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por fazer a subtracao do valor de saque na conta do usuario.
+         
+        :Logica: 
+            Ler o valor de saque e compara com o valor do saldo da conta, em seguida envia
+            o mesmo para que o servidor faca a alteracao do valor do saldo.
+       
+        """
         self.QtStack.setCurrentIndex(6)
         self.tela_saque.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome))
         self.tela_saque.campo_cpf.setText(self.cpf)
@@ -288,6 +390,15 @@ class Main(QMainWindow, Ui_Main):
         
 
     def botaoTransferir(self):
+        """
+        DESCRIPTION
+        Funcao responsavel por fazer a transferencia de um determinado valor de uma conta para outra.
+         
+        :Logica: 
+            Ler o numero da conta de destina e o valor a ser transferido, faz a verificacao do valor 
+            a ser transferido com o valor do saldo, envia-os para que o servidor faca as devidas 
+            mudancas.
+        """
         self.QtStack.setCurrentIndex(7)
         self.tela_transferir.campo_nome.setText('{0} {1}'.format(self.nome,self.sobrenome) )
         self.tela_transferir.campo_cpf.setText(self.cpf)
@@ -316,6 +427,10 @@ class Main(QMainWindow, Ui_Main):
             QMessageBox.information(None, 'Banco', 'Erro')
 
     def botaoFecharPrograma(self):
+        """
+        DESCRIPTION
+        Funcao responsavel encerrar a execucao do proggrama.
+        """
         msg = 'sair'
         cliente_socket.send(msg.encode())
         #cliente_socket.close()

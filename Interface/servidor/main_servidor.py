@@ -1,3 +1,11 @@
+
+"""
+   DESCRIPTION
+   Classe que e responsavel pela exibicao das telas dos do sistema e por mandar os 
+   dados recebidos do usuario para o servidor. 
+   
+"""
+
 import socket
 
 ip = 'localhost'
