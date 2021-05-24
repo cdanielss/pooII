@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Bem-Vindo a Documentação do Banco! &#8212; Banco  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="bem-vindo-a-documentacao-do-banco">
+<h1>Bem-Vindo a Documentação do Banco!<a class="headerlink" href="#bem-vindo-a-documentacao-do-banco" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="field-list">
+<dt class="field-odd">Arquivo</dt>
+<dd class="field-odd"><p>main_servidor.py</p>
+<p>Arquivo principal do Servidor, responsavel por receber todos os dados
+do Cliente e fazer a conexao com os arquivos do Banco.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Logica</dt>
+<dd class="field-odd"><p>Recebe um codigo do Cliente, que com esse codigo sera feito a execucao das funcoes
+expecificas</p>
+</dd>
+<dt class="field-even">Mensagem==1</dt>
+<dd class="field-even"><p>Ira Criar a conta</p>
+</dd>
+<dt class="field-odd">Mensagem==2</dt>
+<dd class="field-odd"><p>Verifica se a conta recebida existe, e envia seus dados para o Cliente</p>
+</dd>
+<dt class="field-even">Mensagem==3</dt>
+<dd class="field-even"><p>Faz o deposito</p>
+</dd>
+<dt class="field-odd">Mensagem==4</dt>
+<dd class="field-odd"><p>Envia o Saldo para o Cliente</p>
+</dd>
+<dt class="field-even">Mensagem==5</dt>
+<dd class="field-even"><p>Faz o saque da conta</p>
+</dd>
+<dt class="field-odd">Mensagem==6</dt>
+<dd class="field-odd"><p>Faz a transferencia entre contas</p>
+</dd>
+<dt class="field-even">Mensagem==7</dt>
+<dd class="field-even"><p>Envia o historico da conta para o Cliente</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Arquivo</dt>
+<dd class="field-odd"><p>main_cliente.py</p>
+<p>Arquivo principal que e responsavel pela exibicao das telas dos do sistema e por mandar os
+dados recebidos do usuario para o servidor.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaBanco">
+<span class="sig-name descname"><span class="pre">abrirTelaBanco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaBanco" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel pela realizacao do login do usuario no sistema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Condicao 1</dt>
+<dd class="field-odd"><p>Verifica se o numero da conta e o cpf são vazios e envia o código com a opcao para
+o servidor verificar a aconta.</p>
+</dd>
+<dt class="field-even">Condicao 2</dt>
+<dd class="field-even"><p>Envia numero da conta e o cpf do cliente para o servidor verificar a aconta.</p>
+</dd>
+<dt class="field-odd">Condicao 3</dt>
+<dd class="field-odd"><p>Se a conta existir o usuario e direcionado para a tela do banco</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaHistorico">
+<span class="sig-name descname"><span class="pre">abrirTelaHistorico</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaHistorico" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel pela exibicao do historico de movimentacoes na conta do usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Logica</dt>
+<dd class="field-odd"><p>Utiliza lacos de repeticao para percorrer as listas de: deposito, saque e transferencia
+recebidas do servidor, e exibi-las na tela do historico.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaCadastro">
+<span class="sig-name descname"><span class="pre">abrirTelaCadastro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaCadastro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por chamar a tela de cadastro.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaSaldo">
+<span class="sig-name descname"><span class="pre">abrirTelaSaldo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaSaldo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel pela exibicao do saldo da conta do usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Logica</dt>
+<dd class="field-odd"><p>Envia o codigo para o servidor, com o requerimento do saldo da conta.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaTransferir">
+<span class="sig-name descname"><span class="pre">abrirTelaTransferir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaTransferir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por chamar a tela de transferencia.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaDeposito">
+<span class="sig-name descname"><span class="pre">abrirTelaDeposito</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaDeposito" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por chamar a tela de deposito.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaSaque">
+<span class="sig-name descname"><span class="pre">abrirTelaSaque</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaSaque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por chamar a tela de saque.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="abrirTelaHome">
+<span class="sig-name descname"><span class="pre">abrirTelaHome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abrirTelaHome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por chamar a tela principal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="botaoCadastra">
+<span class="sig-name descname"><span class="pre">botaoCadastra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#botaoCadastra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por ler os dados do usuario para criar a conta que ira ser salva no banco.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Condicao 1</dt>
+<dd class="field-odd"><p>Verifica se os campos sao vazios.</p>
+</dd>
+<dt class="field-even">Condicao 2</dt>
+<dd class="field-even"><p>Envia os dados para o servidor, para serem salvos.</p>
+</dd>
+<dt class="field-odd">Condicao 3</dt>
+<dd class="field-odd"><p>Exibe uma mensagem de erro.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="botaoDepositar">
+<span class="sig-name descname"><span class="pre">botaoDepositar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#botaoDepositar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por enviar um valor para depósito em uma conta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Logica</dt>
+<dd class="field-odd"><p>Ler o valor de deposito do usuario e enviar para o servidor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="botaoSacar">
+<span class="sig-name descname"><span class="pre">botaoSacar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#botaoSacar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por fazer a subtracao do valor de saque na conta do usuario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Logica</dt>
+<dd class="field-odd"><p>Ler o valor de saque e compara com o valor do saldo da conta, em seguida envia
+o mesmo para que o servidor faca a alteracao do valor do saldo.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="botaoTransferir">
+<span class="sig-name descname"><span class="pre">botaoTransferir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#botaoTransferir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel por fazer a transferencia de um determinado valor de uma conta para outra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Logica</dt>
+<dd class="field-odd"><p>Ler o numero da conta de destina e o valor a ser transferido, faz a verificacao do valor
+a ser transferido com o valor do saldo, envia-os para que o servidor faca as devidas
+mudancas.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="botaoFecharPrograma">
+<span class="sig-name descname"><span class="pre">botaoFecharPrograma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#botaoFecharPrograma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao responsavel encerrar a execucao do proggrama.</p>
+</dd></dl>
+
+</dd>
+<dt class="field-even">Arquivo</dt>
+<dd class="field-even"><p>banco.py</p>
+<p>Arquivo que contem funcoes que envolvem o Banco</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Banco">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Banco</span></span><a class="headerlink" href="#Banco" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classe que e responsavel por armazenar os dados das contas</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Banco.criar_conta">
+<span class="sig-name descname"><span class="pre">criar_conta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nome</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sobrenome</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Banco.criar_conta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao que cria uma conta e insere na lista de contas do banco</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nome</strong> – string
+Nome do cliente</p></li>
+<li><p><strong>sobrenome</strong> – string
+Sobrenome do cliente</p></li>
+<li><p><strong>cpf</strong> – string
+Cpf do Cliente</p></li>
+<li><p><strong>numero</strong> – string
+Numero da Conta criada</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Banco.verificar_conta">
+<span class="sig-name descname"><span class="pre">verificar_conta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Banco.verificar_conta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao que verifica se uma conta existe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numero</strong> – string
+Numero da Conta criada</p></li>
+<li><p><strong>cpf</strong> – string
+Cpf do Cliente</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Vai retornar True se caso existir a conta, se não, retorna False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Banco.buscar_conta">
+<span class="sig-name descname"><span class="pre">buscar_conta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Banco.buscar_conta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funcao que busca uma conta</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>numero</strong> – string
+Numero da Conta criada</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Vai retornar uma conta que tiver o numero passado por parametro</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd>
+</dl>
+</section>
+<section id="indices-e-tabelas">
+<h1>Índices e tabelas<a class="headerlink" href="#indices-e-tabelas" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Banco</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Carlos Daniel e Cicero Neto.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
