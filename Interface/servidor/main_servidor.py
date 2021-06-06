@@ -150,8 +150,8 @@ while(msg != 'sair'):
       con.send(confirma.encode())
    #transferencia
    elif msg == '6':
-      confirma = 'confirma'
-      con.send(confirma.encode())
+      confir = 'confirma'
+      con.send(confir.encode())
       valor = con.recv(1024).decode()
       con.send(confir.encode())
       numero_contaDestino = con.recv(1024).decode()
@@ -166,7 +166,6 @@ while(msg != 'sair'):
       historicoT = '''UPDATE clientes SET historico = CONCAT(historico, ", Transferencia de {0} reais Para {2}\n") WHERE cpf = '{1}' '''.format(valor, cpf, numero_contaDestino)
       cur.execute(historicoT)
       conn.commit()
-      con.send(confirma.encode())
 
    #historico
    elif msg == '7':
