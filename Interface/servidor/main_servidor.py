@@ -5,6 +5,29 @@
 """
 
 import socket
+import mysql.connector
+conn = mysql.connector.connect(user='root', password='2486',
+                              host='localhost')
+
+cur = conn.cursor()
+sqlbanco = '''CREATE DATABASE IF NOT EXISTS banco'''
+cur.execute(sqlbanco)
+
+sqluse = '''USE banco'''
+cur.execute(sqluse)
+
+
+sqlTabelaClientes ='''CREATE TABLE IF NOT EXISTS clientes (
+   id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   nome TEXT,
+   numero TEXT,
+   sobrenome TEXT,
+   cpf TEXT,
+   saldo FLOAT, 
+   historico TEXT
+)'''
+
+cur.execute(sqlTabelaClientes)
 
 ip = 'localhost'
 porta = 8000
@@ -60,11 +83,11 @@ while(msg != 'sair'):
 
       cpf = con.recv(1024).decode()
       con.send(confir.encode())
-
+      
       numero = con.recv(1024).decode()
       banco.criar_conta(nome,sobrenome,cpf,numero) 
       con.send(confir.encode())
-   
+
    elif msg == '2':
       #tela do usuário logado
       confir = 'confirma'
@@ -79,9 +102,12 @@ while(msg != 'sair'):
       verifica = banco.verificar_conta(numero_conta,cpf)
       con.send(verifica.encode())
       if verifica == 'True':
-         conta = banco.buscar_conta(numero_conta)
-         nome = conta.get_titular.get_nome
-         sobrenome = conta.get_titular.get_sobrenome
+         sqlnome = '''SELECT nome, sobrenome FROM clientes  WHERE numero = '{0}' '''.format(numero_conta)
+         cur.execute(sqlnome)
+         for i in cur.fetchall():
+            nome = i[0]
+            sobrenome = i[1]
+         print(nome, sobrenome) 
          con.send(nome.encode())
          confirma = con.recv(1024).decode()   
          con.send(sobrenome.encode())
@@ -90,38 +116,68 @@ while(msg != 'sair'):
       confir = 'confirma'
       con.send(confir.encode())
       valor = con.recv(1024).decode()
-      conta.depositar(valor)
+      deposito = '''UPDATE clientes SET saldo = saldo + '{0}' WHERE cpf = '{1}' '''.format(valor, cpf)
+      cur.execute(deposito)
+      conn.commit()
+      historicoD = '''UPDATE clientes SET historico = CONCAT(historico, ", Deposito de {0} reais") WHERE cpf = '{1}'\n '''.format(valor, cpf)
+      cur.execute(historicoD)
+      conn.commit()
       con.send(confir.encode())
    #saldo 
    elif msg == '4':
-      confir = str(conta.get_saldo)
+      sal = '''SELECT saldo FROM clientes WHERE cpf = '{0}' '''.format(cpf)
+      cur.execute(sal)
+      for i in cur:
+         confir = str(i)
+         
       con.send(confir.encode())
    #saque
    elif msg == '5':
-      saldo = str(conta.get_saldo)
-      con.send(saldo.encode())
+      """ sal = '''SELECT saldo FROM clientes WHERE cpf = '{0}' '''.format(cpf)
+      cur.execute(sal)
+      saldo = str(sal)
+      con.send(saldo.encode()) """
+      confir = 'confirma'
+      con.send(confir.encode())
       valor = con.recv(1024).decode()
-      conta.sacar(float(valor))
+      saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = '{1}' '''.format(valor, cpf)
+      cur.execute(saqu)
+      conn.commit()
+      historicoS = '''UPDATE clientes SET historico = CONCAT(historico, ", Saque de {0} reais") WHERE cpf = '{1}'\n'''.format(valor, cpf)
+      cur.execute(historicoS)
+      conn.commit()
       confirma = 'confirma'
       con.send(confirma.encode())
    #transferencia
    elif msg == '6':
       confirma = 'confirma'
-      saldo = str(conta.get_saldo)
-      con.send(saldo.encode())
-      valor = con.recv(1024).decode()
       con.send(confirma.encode())
+      valor = con.recv(1024).decode()
+      con.send(confir.encode())
       numero_contaDestino = con.recv(1024).decode()
-      contaDestino = banco.buscar_conta(numero_contaDestino)
-      conta.transferir(contaDestino, float(valor))
+      con.send(confir.encode())
+      print('numero', numero_contaDestino, 'valor', valor)
+      saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = '{1}' '''.format(valor, cpf)
+      cur.execute(saqu)
+      conn.commit()
+      deposito = '''UPDATE clientes SET saldo = saldo + '{0}' WHERE numero = '{1}' '''.format(valor, numero_contaDestino)
+      cur.execute(deposito)
+      conn.commit()
+      historicoT = '''UPDATE clientes SET historico = CONCAT(historico, ", Transferencia de {0} reais Para {2}\n") WHERE cpf = '{1}' '''.format(valor, cpf, numero_contaDestino)
+      cur.execute(historicoT)
+      conn.commit()
       con.send(confirma.encode())
 
    #historico
    elif msg == '7':
-      historico = conta.get_historico
-      listaDepositos = str(historico[0])
-      listaSaques = str(historico[1])
-      listaTransferencias = str(historico[2])
+      historicoTotal = '''SELECT historico FROM clientes WHERE numero = '{0}' '''.format(numero_conta)
+      cur.execute(historicoTotal)
+      for i in cur:
+         historico = i
+
+      listaDepositos = str(historico)
+      listaSaques = str(historico)
+      listaTransferencias = str(historico)
       con.send(listaDepositos.encode())
       con.recv(1024).decode()
       con.send(listaSaques.encode())

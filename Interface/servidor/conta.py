@@ -1,5 +1,3 @@
-
-
 from datetime import datetime
 
 class Historico:
@@ -35,8 +33,8 @@ class Historico:
 class Conta:
    _total_contas = 0
    __slots__ = ['_titular','_numero','_saldo', '_historico']
-
-   def __init__(self, cliente, numero, saldo):         
+  
+   def __init__(self, cliente, numero, saldo):   
       self._titular = cliente 
       self._numero = numero 
       self._saldo = saldo 
@@ -92,7 +90,7 @@ class Cliente:
    def __init__(self, nome, sobrenome, cpf): 
       self._nome = nome 
       self._sobrenome = sobrenome 
-      self._cpf = cpf 
+      self._cpf = cpf
 
    @property
    def get_nome(self):

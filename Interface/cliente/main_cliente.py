@@ -1,4 +1,12 @@
 import socket
+import mysql.connector
+
+conn = mysql.connector.connect(user='root', password='2486',
+                              host='localhost')
+
+cur = conn.cursor()
+sqluse = '''USE banco'''
+cur.execute(sqluse)
 
 ip = 'localhost'
 porta = 8000
@@ -159,7 +167,6 @@ class Main(QMainWindow, Ui_Main):
 
                 if(verificar_conta == 'True'):
                     #Informações do usuário logado
-                    
                     self.nome = cliente_socket.recv(1024).decode()
                     cliente_socket.send('confirma'.encode())
                     self.sobrenome = cliente_socket.recv(1024).decode()
@@ -206,23 +213,12 @@ class Main(QMainWindow, Ui_Main):
         confirma = cliente_socket.recv(1024).decode()
         for i in range(10):
             self.tela_historico.campoLista_depositos.item(i).setText('')
-            self.tela_historico.campoLista_saque.item(i).setText('')
-            self.tela_historico.campoLista_transferencia.item(i).setText('')
-        
+            
         i = 0
         for x in listaDepositos:    
             self.tela_historico.campoLista_depositos.item(i).setText(str(x))
             i += 1
 
-        i = 0
-        for y in listaSaques:    
-            self.tela_historico.campoLista_saque.item(i).setText(str(y))
-            i += 1
-
-        i = 0
-        for z in listaTransferencias:    
-            self.tela_historico.campoLista_transferencia.item(i).setText(str(z))
-            i += 1
         
     def abrirTelaCadastro(self):
         """
@@ -376,7 +372,13 @@ class Main(QMainWindow, Ui_Main):
         try:
             msg = '5'
             cliente_socket.send(msg.encode())
-            saldo = cliente_socket.recv(1024).decode()
+            confirma = cliente_socket.recv(1024).decode()
+            cliente_socket.send(valor.encode())
+            confirma = cliente_socket.recv(1024).decode()
+            self.tela_saque.campo_valor.setText('')
+            self.QtStack.setCurrentIndex(2)
+            QMessageBox.information(None, 'Banco', 'Saque efetuado !')
+            """ saldo = cliente_socket.recv(1024).decode()
             if ((float(saldo) != 0.0) and (float(valor) <= float(saldo))):
                 cliente_socket.send(valor.encode())
                 confirma = cliente_socket.recv(1024).decode()
@@ -384,7 +386,7 @@ class Main(QMainWindow, Ui_Main):
                 self.QtStack.setCurrentIndex(2)
                 QMessageBox.information(None, 'Banco', 'Saque efetuado !')
             else: 
-                QMessageBox.information(None, 'Banco', 'Valor indisponível')
+                QMessageBox.information(None, 'Banco', 'Valor indisponível' """
         except:
             QMessageBox.information(None, 'Banco', 'Erro')
         
@@ -408,21 +410,18 @@ class Main(QMainWindow, Ui_Main):
         try:
             msg = '6'
             cliente_socket.send(msg.encode())
-            saldo = cliente_socket.recv(1024).decode()
-            if ((float(saldo) != 0.0) and (float(valor) <= float(saldo))):
-                try:
-                    cliente_socket.send(valor.encode())
-                    confirma = cliente_socket.recv(1024).decode()
-                    cliente_socket.send(numero_contaDestino.encode())
-                    confirma = cliente_socket.recv(1024).decode()
-                    self.tela_transferir.campo_valor.setText('')
-                    self.tela_transferir.campo_contaDestino.setText('')
-                    self.QtStack.setCurrentIndex(2)
-                    QMessageBox.information(None, 'Banco', 'Transferência efetuada !')
-                except:
-                    QMessageBox.information(None, 'Banco', 'Dados incorretos')
-            else: 
-                QMessageBox.information(None, 'Banco', 'Saldo indisponível')
+            confirma = cliente_socket.recv(1024).decode()
+            try:
+                cliente_socket.send(valor.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                cliente_socket.send(numero_contaDestino.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                self.tela_transferir.campo_valor.setText('')
+                self.tela_transferir.campo_contaDestino.setText('')
+                self.QtStack.setCurrentIndex(2)
+                QMessageBox.information(None, 'Banco', 'Transferência efetuada !')
+            except:
+                QMessageBox.information(None, 'Banco', 'Dados incorretos')
         except:
             QMessageBox.information(None, 'Banco', 'Erro')
 

@@ -5,6 +5,14 @@
 """
 
 from conta import Conta, Cliente
+import mysql.connector
+
+conn = mysql.connector.connect(user='root', password='2486',
+                              host='localhost')
+
+cur = conn.cursor()
+sqluse = '''USE banco'''
+cur.execute(sqluse)
 
 class Banco():
    def __init__(self):
@@ -25,9 +33,14 @@ class Banco():
       :param numero: string
          Numero da Conta criada
       """
-      cliente = Cliente(nome, sobrenome, cpf)
-      conta = Conta(cliente, numero, 0.0 )
-      self._contas[conta.get_numero] = conta
+      
+      sqlinsere = '''INSERT INTO clientes (nome, sobrenome, cpf, numero, saldo, historico) VALUES ('{0}', '{1}', '{2}', '{3}', 0.0, 'Conta Criada')'''.format(nome, sobrenome, cpf, numero)
+      cur.execute(sqlinsere)
+      cur.execute('''SELECT * FROM clientes''') 
+      for i in cur:
+         print(i)
+      conn.commit()
+
    
    def verificar_conta(self, numero, cpf):
       """
@@ -40,11 +53,21 @@ class Banco():
          Cpf do Cliente
       :return:
          Vai retornar True se caso existir a conta, se não, retorna False 
+         
       """
-      for y, x in self._contas.items():
-         if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
+      teste = '''SELECT * FROM clientes'''
+      cur.execute(teste)
+      for i in cur.fetchall():
+         print("Cpf", i[2], "Numero", i[4])
+         if i[2] == cpf and i[4] == numero:
             return 'True'
       return 'False'
+      """ for y, x in self._contas.items():
+            if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
+               return 'True' 
+         return 'False'
+            """
+      
    
    def buscar_conta(self, numero):
       """
