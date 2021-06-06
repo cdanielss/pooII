@@ -155,7 +155,7 @@ while(msg != 'sair'):
       valor = con.recv(1024).decode()
       con.send(confir.encode())
       numero_contaDestino = con.recv(1024).decode()
-      con.send(confir.encode())
+     
       print('numero', numero_contaDestino, 'valor', valor)
       saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = '{1}' '''.format(valor, cpf)
       cur.execute(saqu)
@@ -166,7 +166,8 @@ while(msg != 'sair'):
       historicoT = '''UPDATE clientes SET historico = CONCAT(historico, ", Transferencia de {0} reais Para {2}\n") WHERE cpf = '{1}' '''.format(valor, cpf, numero_contaDestino)
       cur.execute(historicoT)
       conn.commit()
-
+      con.send(confir.encode())
+   
    #historico
    elif msg == '7':
       historicoTotal = '''SELECT historico FROM clientes WHERE numero = '{0}' '''.format(numero_conta)
