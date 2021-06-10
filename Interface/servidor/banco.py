@@ -34,7 +34,7 @@ class Banco():
          Numero da Conta criada
       """
       
-      sqlinsere = '''INSERT INTO clientes (nome, sobrenome, cpf, numero, saldo, historico) VALUES ('{0}', '{1}', '{2}', '{3}', 0.0, 'Conta Criada')'''.format(nome, sobrenome, cpf, numero)
+      sqlinsere = '''INSERT INTO clientes (nome, sobrenome, cpf, numero, saldo, historico) VALUES ('{0}', '{1}', MD5('{2}'), '{3}', 0.0, 'Conta Criada')'''.format(nome, sobrenome, cpf, numero)
       cur.execute(sqlinsere)
       cur.execute('''SELECT * FROM clientes''') 
       for i in cur:
@@ -55,12 +55,10 @@ class Banco():
          Vai retornar True se caso existir a conta, se não, retorna False 
          
       """
-      teste = '''SELECT * FROM clientes'''
+      teste = '''SELECT * FROM clientes WHERE numero = '{0}' and cpf = MD5('{1}') '''.format(numero, cpf)
       cur.execute(teste)
       for i in cur.fetchall():
-         print("Cpf", i[2], "Numero", i[4])
-         if i[2] == cpf and i[4] == numero:
-            return 'True'
+         return 'True'
       return 'False'
       """ for y, x in self._contas.items():
             if (numero == x.get_numero and cpf == x.get_titular.get_cpf):
