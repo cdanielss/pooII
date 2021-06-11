@@ -36,9 +36,7 @@ class Banco():
       
       sqlinsere = '''INSERT INTO clientes (nome, sobrenome, cpf, numero, saldo, historico) VALUES ('{0}', '{1}', MD5('{2}'), '{3}', 0.0, 'Conta Criada')'''.format(nome, sobrenome, cpf, numero)
       cur.execute(sqlinsere)
-      cur.execute('''SELECT * FROM clientes''') 
-      for i in cur:
-         print(i)
+      print("Conta Criada")
       conn.commit()
 
    

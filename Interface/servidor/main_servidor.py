@@ -107,7 +107,7 @@ while(msg != 'sair'):
          for i in cur.fetchall():
             nome = i[0]
             sobrenome = i[1]
-         print(nome, sobrenome) 
+         print("Logado Usuario", nome, sobrenome) 
          con.send(nome.encode())
          confirma = con.recv(1024).decode()   
          con.send(sobrenome.encode())
@@ -122,6 +122,7 @@ while(msg != 'sair'):
       historicoD = '''UPDATE clientes SET historico = CONCAT(historico, ", Deposito de {0} reais") WHERE cpf = MD5('{1}')\n '''.format(valor, cpf)
       cur.execute(historicoD)
       conn.commit()
+      print("Deposito de", valor)
       con.send(confir.encode())
    #saldo 
    elif msg == '4':
@@ -140,14 +141,23 @@ while(msg != 'sair'):
       confir = 'confirma'
       con.send(confir.encode())
       valor = con.recv(1024).decode()
-      saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = MD5('{1}') '''.format(valor, cpf)
-      cur.execute(saqu)
-      conn.commit()
-      historicoS = '''UPDATE clientes SET historico = CONCAT(historico, ", Saque de {0} reais") WHERE cpf = MD5('{1}')\n'''.format(valor, cpf)
-      cur.execute(historicoS)
-      conn.commit()
-      confirma = 'confirma'
-      con.send(confirma.encode())
+      saldo = '''SELECT saldo FROM clientes WHERE cpf = MD5('{0}') '''.format(cpf)
+      cur.execute(saldo)
+      for i in cur:
+         aux = i
+      saldoAtual = aux[-1]
+      if (float(valor) <= float(saldoAtual)):
+         saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = MD5('{1}') '''.format(valor, cpf)
+         cur.execute(saqu)
+         conn.commit()
+         historicoS = '''UPDATE clientes SET historico = CONCAT(historico, ", Saque de {0} reais") WHERE cpf = MD5('{1}')\n'''.format(valor, cpf)
+         cur.execute(historicoS)
+         conn.commit()
+         print("Saque de", valor)
+         confirma = 'confirma'
+         con.send(confirma.encode())
+      else:
+         con.send('erro'.encode())
    #transferencia
    elif msg == '6':
       confir = 'confirma'
@@ -155,19 +165,25 @@ while(msg != 'sair'):
       valor = con.recv(1024).decode()
       con.send(confir.encode())
       numero_contaDestino = con.recv(1024).decode()
-     
-      print('numero', numero_contaDestino, 'valor', valor)
-      saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = MD5('{1}') '''.format(valor, cpf)
-      cur.execute(saqu)
-      conn.commit()
-      deposito = '''UPDATE clientes SET saldo = saldo + '{0}' WHERE numero = '{1}' '''.format(valor, numero_contaDestino)
-      cur.execute(deposito)
-      conn.commit()
-      historicoT = '''UPDATE clientes SET historico = CONCAT(historico, ", Transferencia de {0} reais Para {2}\n") WHERE cpf = MD5('{1}') '''.format(valor, cpf, numero_contaDestino)
-      cur.execute(historicoT)
-      conn.commit()
-      con.send(confir.encode())
-   
+      saldo = '''SELECT saldo FROM clientes WHERE cpf = MD5('{0}') '''.format(cpf)
+      cur.execute(saldo)
+      for i in cur:
+         aux = i
+      saldoAtual = aux[-1]
+      if (float(valor) <= float(saldoAtual)):
+         print('Trans para numero', numero_contaDestino, 'de', valor)
+         saqu = '''UPDATE clientes SET saldo = saldo - '{0}' WHERE cpf = MD5('{1}') '''.format(valor, cpf)
+         cur.execute(saqu)
+         conn.commit()
+         deposito = '''UPDATE clientes SET saldo = saldo + '{0}' WHERE numero = '{1}' '''.format(valor, numero_contaDestino)
+         cur.execute(deposito)
+         conn.commit()
+         historicoT = '''UPDATE clientes SET historico = CONCAT(historico, ", Transferencia de {0} reais Para {2}\n") WHERE cpf = MD5('{1}') '''.format(valor, cpf, numero_contaDestino)
+         cur.execute(historicoT)
+         conn.commit()
+         con.send(confir.encode())
+      else:
+         con.send('erro'.encode())
    #historico
    elif msg == '7':
       historicoTotal = '''SELECT historico FROM clientes WHERE numero = '{0}' '''.format(numero_conta)

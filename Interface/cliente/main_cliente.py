@@ -309,21 +309,21 @@ class Main(QMainWindow, Ui_Main):
             cliente_socket.send(msg.encode())
             if cliente_socket.recv(1024).decode() == 'confirma':
                 
-                    cliente_socket.send(nome.encode())
-                    confirma = cliente_socket.recv(1024).decode()
-                    cliente_socket.send(sobrenome.encode())
-                    confirma = cliente_socket.recv(1024).decode()
-                    cliente_socket.send(cpf.encode())
-                    confirma = cliente_socket.recv(1024).decode()
-                    cliente_socket.send(numero.encode())
-                    confirma = cliente_socket.recv(1024).decode()
+                cliente_socket.send(nome.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                cliente_socket.send(sobrenome.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                cliente_socket.send(cpf.encode())
+                confirma = cliente_socket.recv(1024).decode()
+                cliente_socket.send(numero.encode())
+                confirma = cliente_socket.recv(1024).decode()
 
-                    self.QtStack.setCurrentIndex(0)
-                    self.tela_cadastro.campo_nome.setText('')
-                    self.tela_cadastro.campo_Sobrenome.setText('')
-                    self.tela_cadastro.campo_cpf.setText('')
-                    self.tela_cadastro.campo_NumeroConta.setText('')
-                    QMessageBox.information(None, 'Banco', 'Cadastro realizado !')
+                self.QtStack.setCurrentIndex(0)
+                self.tela_cadastro.campo_nome.setText('')
+                self.tela_cadastro.campo_Sobrenome.setText('')
+                self.tela_cadastro.campo_cpf.setText('')
+                self.tela_cadastro.campo_NumeroConta.setText('')
+                QMessageBox.information(None, 'Banco', 'Cadastro realizado !')
                 
 
         if(numero == '' or cpf == '' or sobrenome == '' or nome == ''): 
@@ -375,9 +375,12 @@ class Main(QMainWindow, Ui_Main):
             confirma = cliente_socket.recv(1024).decode()
             cliente_socket.send(valor.encode())
             confirma = cliente_socket.recv(1024).decode()
-            self.tela_saque.campo_valor.setText('')
-            self.QtStack.setCurrentIndex(2)
-            QMessageBox.information(None, 'Banco', 'Saque efetuado !')
+            if confirma == 'confirma': 
+                self.tela_saque.campo_valor.setText('')
+                self.QtStack.setCurrentIndex(2)
+                QMessageBox.information(None, 'Banco', 'Saque efetuado !')
+            else:
+                QMessageBox.information(None, 'Banco', 'Valor indisponível')
             """ saldo = cliente_socket.recv(1024).decode()
             if ((float(saldo) != 0.0) and (float(valor) <= float(saldo))):
                 cliente_socket.send(valor.encode())
@@ -412,14 +415,18 @@ class Main(QMainWindow, Ui_Main):
             cliente_socket.send(msg.encode())
             confirma = cliente_socket.recv(1024).decode()
             try:
+                
                 cliente_socket.send(valor.encode())
                 confirma = cliente_socket.recv(1024).decode()
                 cliente_socket.send(numero_contaDestino.encode())
                 confirma = cliente_socket.recv(1024).decode()
-                self.tela_transferir.campo_valor.setText('')
-                self.tela_transferir.campo_contaDestino.setText('')
-                self.QtStack.setCurrentIndex(2)
-                QMessageBox.information(None, 'Banco', 'Transferência efetuada !')
+                if confirma == 'confirma':
+                    QMessageBox.information(None, 'Banco', 'Transferência efetuada !')
+                else:
+                    self.tela_transferir.campo_valor.setText('')
+                    self.tela_transferir.campo_contaDestino.setText('')
+                    self.QtStack.setCurrentIndex(2)
+                    QMessageBox.information(None, 'Banco', 'Valor indisponível')
             except:
                 QMessageBox.information(None, 'Banco', 'Dados incorretos')
         except:
