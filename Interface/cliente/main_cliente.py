@@ -9,7 +9,7 @@ sqluse = '''USE banco'''
 cur.execute(sqluse)
 
 ip = 'localhost'
-porta = 8000
+porta = 7003
 endereco = ((ip,porta))
 cliente_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 cliente_socket.connect(endereco)
@@ -201,23 +201,11 @@ class Main(QMainWindow, Ui_Main):
         msg = '7'
         confirma = 'confirma'
         cliente_socket.send(msg.encode())
-        listaDepositos = cliente_socket.recv(1024).decode()
-        listaDepositos = eval(listaDepositos)
-        cliente_socket.send(confirma.encode())
-        listaSaques = cliente_socket.recv(1024).decode()
-        listaSaques = eval(listaSaques)
-        cliente_socket.send(confirma.encode())
-        listaTransferencias = cliente_socket.recv(1024).decode()
-        listaTransferencias = eval(listaTransferencias)
+        listaHistorico = cliente_socket.recv(1024).decode()
         cliente_socket.send(confirma.encode())
         confirma = cliente_socket.recv(1024).decode()
-        for i in range(10):
-            self.tela_historico.campoLista_depositos.item(i).setText('')
-            
-        i = 0
-        for x in listaDepositos:    
-            self.tela_historico.campoLista_depositos.item(i).setText(str(x))
-            i += 1
+        self.tela_historico.campoLista_depositos.item(0).setText(str(listaHistorico))
+        
 
         
     def abrirTelaCadastro(self):
